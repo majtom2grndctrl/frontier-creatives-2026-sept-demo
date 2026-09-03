@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- no-op favicon: keeps the demo console free of a 404 without a network fetch -->
+    <link rel="icon" href="data:," />
+    <title>polaris</title>
+
+    <!--
+      Polaris web components, vendored for offline use.
+      Source: https://cdn.shopify.com/shopifycloud/polaris-1.js (downloaded 2026-09-03)
+
+      Self-hosted Inter (Shopify's copy). The Polaris bundle also injects this
+      stylesheet itself from cdn.shopify.com at runtime; local-font-shim.js
+      rewrites that injected <link> to point here instead, so nothing reaches
+      the network.
+
+      <s-icon> likewise fetches each icon SVG from cdn.shopify.com at runtime;
+      local-icon-shim.js repoints those fetches at the vendored copies in
+      /polaris/admin-ui-foundations/.
+
+      Both shims must load before polaris-1.js.
+    -->
+    <link rel="stylesheet" href="/fonts/inter/styles.css" />
+    <script src="/polaris/local-font-shim.js"></script>
+    <script src="/polaris/local-icon-shim.js"></script>
+    <script src="/polaris/polaris-1.js"></script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
