@@ -1,0 +1,422 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --font-sans: var(--font-roboto-flex), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-mono);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+
+  /* Surface pair + accent/positive roles used by the publication dashboard.
+     See the ":root" block below for why these exist. */
+  --color-surface-recessed: var(--surface-recessed);
+  --color-surface-raised: var(--surface-raised);
+  --color-accent-solid: var(--accent-solid);
+  --color-accent-solid-foreground: var(--accent-solid-foreground);
+  --color-accent-graphic: var(--accent-graphic);
+  --color-accent-tonal: var(--accent-tonal);
+  --color-accent-on-tonal: var(--accent-on-tonal);
+  --color-positive: var(--positive);
+  --color-positive-foreground: var(--positive-foreground);
+
+  /* Sunken surface + the sequential contribution ramp. Both are consumed by
+     the developer profile screen; see the ":root" block below for why. */
+  --color-surface-sunken: var(--surface-sunken);
+  --color-contribution-1: var(--contribution-1);
+  --color-contribution-2: var(--contribution-2);
+  --color-contribution-3: var(--contribution-3);
+  --color-contribution-4: var(--contribution-4);
+}
+
+:root {
+  --background: oklch(1 0 0);
+  --foreground: oklch(0% 0 0);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0% 0 0);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0% 0 0);
+  --primary: oklch(0% 0 0);
+  --primary-foreground: oklch(0.985 0 0);
+  --secondary: oklch(0.97 0 0);
+  --secondary-foreground: oklch(0.205 0 0);
+  --muted: oklch(0.97 0 0);
+  --muted-foreground: oklch(0.556 0 0);
+  --accent: oklch(0.97 0 0);
+  --accent-foreground: oklch(0.205 0 0);
+  --destructive: oklch(0.577 0.245 27.325);
+  --destructive-foreground: oklch(0.97 0.01 17);
+  --border: oklch(0.922 0 0);
+  --input: oklch(0.922 0 0);
+  --ring: oklch(0.708 0 0);
+  --chart-1: oklch(0.646 0.222 41.116);
+  --chart-2: oklch(0.6 0.118 184.704);
+  --chart-3: oklch(0.398 0.07 227.392);
+  --chart-4: oklch(0.828 0.189 84.429);
+  --chart-5: oklch(0.769 0.188 70.08);
+  --sidebar: oklch(0.985 0 0);
+  --sidebar-foreground: oklch(0% 0 0);
+  --sidebar-primary: oklch(0.205 0 0);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent: oklch(0.97 0 0);
+  --sidebar-accent-foreground: oklch(0.205 0 0);
+  --sidebar-border: oklch(0.922 0 0);
+  --sidebar-ring: oklch(0.708 0 0);
+
+  /* --- Recessed / raised surface pair -------------------------------------
+     --background and --card both resolve to white in the light theme, so a
+     screen that needs an app background one step *below* its raised panels
+     has no token for it. This pair supplies one, and inverts correctly:
+     raised is darker than recessed in light, lighter in dark. */
+  --surface-recessed: oklch(0.97 0 0);
+  --surface-raised: var(--card);
+
+  /* --- Accent roles --------------------------------------------------------
+     Azure is the default accent scale. Solid carries text (4.8:1 on white),
+     graphic is a lighter step for strokes and indicators (>=3:1 in both
+     themes), tonal is the low-opacity fill behind accent-on-tonal text. */
+  --accent-solid: var(--color-azure-600);
+  --accent-solid-foreground: oklch(1 0 0);
+  --accent-graphic: var(--color-azure-500);
+  --accent-tonal: var(--color-azure-050);
+  --accent-on-tonal: var(--color-azure-700);
+
+  /* --- Positive status -----------------------------------------------------
+     Success ships no semantic token; this is the sanctioned green, promoted
+     to a token pair so components never need a dark: override. 6.7:1. */
+  --positive: oklch(0.95 0.045 150);
+  --positive-foreground: oklch(0.44 0.105 150);
+
+  /* --- Sunken surface ------------------------------------------------------
+     A third neutral step, below --muted. It exists for elements that must read
+     as deeper than a recessed band they already sit on: the profile tab bar's
+     count badges and the contribution heatmap's empty cell. Neutral by
+     requirement -- it must never read as the faintest step of the sequential
+     ramp below.
+
+     It sits *between* the page and --muted in both themes rather than simply
+     following the theme's polarity, because it has to clear two bars at once:
+     deeper than the chrome band it sits on, and darker than the ramp's first
+     step. Putting it above --muted in dark satisfies the first and breaks the
+     second -- an empty heatmap day then outshines a one-commit day, and the
+     ramp stops reading as a ramp. */
+  --surface-sunken: oklch(0.922 0 0);
+
+  /* --- Contribution ramp ---------------------------------------------------
+     A four-step sequential ramp in one hue, drawn from azure, for the
+     contribution heatmap, its legend, the activity breakdown chart, and the
+     timeline volume bars. Step 4 is the strong end and is what strokes and
+     fills the graphics. Light runs pale to deep; dark inverts, so that more
+     contributions always read as more luminous against the page. */
+  --contribution-1: var(--color-azure-200);
+  --contribution-2: var(--color-azure-400);
+  --contribution-3: var(--color-azure-600);
+  --contribution-4: var(--color-azure-800);
+}
+
+.dark {
+  --background: oklch(0.145 0 0);
+  --foreground: oklch(0.985 0 0);
+  --card: oklch(0.205 0 0);
+  --card-foreground: oklch(0.985 0 0);
+  --popover: oklch(0.205 0 0);
+  --popover-foreground: oklch(0.985 0 0);
+  --primary: oklch(0.922 0 0);
+  --primary-foreground: oklch(0.205 0 0);
+  --secondary: oklch(0.269 0 0);
+  --secondary-foreground: oklch(0.985 0 0);
+  --muted: oklch(0.269 0 0);
+  --muted-foreground: oklch(0.708 0 0);
+  --accent: oklch(0.371 0 0);
+  --accent-foreground: oklch(0.985 0 0);
+  --destructive: oklch(0.704 0.191 22.216);
+  --destructive-foreground: oklch(0.58 0.22 27);
+  --border: oklch(1 0 0 / 10%);
+  --input: oklch(1 0 0 / 15%);
+  --ring: oklch(0.556 0 0);
+  --chart-1: oklch(0.488 0.243 264.376);
+  --chart-2: oklch(0.696 0.17 162.48);
+  --chart-3: oklch(0.769 0.188 70.08);
+  --chart-4: oklch(0.627 0.265 303.9);
+  --chart-5: oklch(0.645 0.246 16.439);
+  --sidebar: oklch(0.205 0 0);
+  --sidebar-foreground: oklch(0.985 0 0);
+  --sidebar-primary: oklch(0.488 0.243 264.376);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent: oklch(0.269 0 0);
+  --sidebar-accent-foreground: oklch(0.985 0 0);
+  --sidebar-border: oklch(1 0 0 / 10%);
+  --sidebar-ring: oklch(0.439 0 0);
+
+  /* The recessed/raised relationship inverts: raised is the lighter block. */
+  --surface-recessed: var(--background);
+  --surface-raised: var(--card);
+
+  --accent-solid: var(--color-azure-600);
+  --accent-solid-foreground: oklch(1 0 0);
+  --accent-graphic: var(--color-azure-500);
+  --accent-tonal: var(--color-azure-950);
+  --accent-on-tonal: var(--color-azure-300);
+
+  --positive: oklch(0.3 0.06 150);
+  --positive-foreground: oklch(0.86 0.14 150);
+
+  --surface-sunken: oklch(0.205 0 0);
+
+  --contribution-1: var(--color-azure-900);
+  --contribution-2: var(--color-azure-700);
+  --contribution-3: var(--color-azure-500);
+  --contribution-4: var(--color-azure-300);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   Design system — type, spacing, and grid
+   --------------------------------------------------------------------------- */
+
+:root {
+  /* Roboto Flex variation axes */
+  --font-slnt: 0;
+  --font-wdth: 111;
+  --font-wght: 460;
+  --font-GRAD: 0;
+  --font-XOPQ: 91;
+
+  /* Optical height ratio = cap height / em, read from the Roboto Flex OS/2
+     table: sCapHeight 1456 / unitsPerEm 2048. The axis settings above are
+     horizontal (wdth, XOPQ) or weight, so none of them move cap height; the
+     YTUC axis that would sits at its 712 default. The spacing scale is
+     derived from this ratio, so the rhythm is tied to the face, not to a
+     round number picked in the abstract. */
+  --optical-ratio: 0.71094;
+
+  /* Scale roots */
+  --type-base: 0.9rem;                                      /* 14.4px */
+  --scale-ratio: 1.25;
+  --space-base: calc(var(--type-base) * var(--optical-ratio));
+  --space-sxs: calc(var(--space-base) / var(--scale-ratio));
+  --space-s2xs: calc(var(--space-sxs) / var(--scale-ratio));
+  --space-s3xs: calc(var(--space-s2xs) / var(--scale-ratio));
+  --space-s4xs: calc(var(--space-s3xs) / var(--scale-ratio));
+
+  /* Base corner radius; consumed directly by sonner.tsx. Tracks --radius-lg. */
+  --radius: var(--spacing-s3);
+
+  /* Grid */
+  --grid-columns: 19;
+  --grid-content-columns: 17;
+  --grid-gutter: var(--spacing-s3);
+}
+
+@theme {
+  /* Type ramp — 14 steps, base 14.4px, x1.25.
+
+     Every step carries its line height, and that line height is a spacing
+     step, so leading lands on the same rhythm as padding and gaps. Both
+     series step by 1.25, so the offset between them *is* the ratio: three
+     steps up gives 1.389 (reading leading), two gives 1.111 (display).
+     t1-t3 are read in paragraphs and take the looser value; t4 and up are
+     display sizes and take the tighter one. */
+  --text-t1: var(--type-base);
+  --text-t1--line-height: var(--spacing-s4);
+  --text-t2: calc(var(--text-t1) * var(--scale-ratio));
+  --text-t2--line-height: var(--spacing-s5);
+  --text-t3: calc(var(--text-t2) * var(--scale-ratio));
+  --text-t3--line-height: var(--spacing-s6);
+  --text-t4: calc(var(--text-t3) * var(--scale-ratio));
+  --text-t4--line-height: var(--spacing-s6);
+  --text-t5: calc(var(--text-t4) * var(--scale-ratio));
+  --text-t5--line-height: var(--spacing-s7);
+  --text-t6: calc(var(--text-t5) * var(--scale-ratio));
+  --text-t6--line-height: var(--spacing-s8);
+  --text-t7: calc(var(--text-t6) * var(--scale-ratio));
+  --text-t7--line-height: var(--spacing-s9);
+  --text-t8: calc(var(--text-t7) * var(--scale-ratio));
+  --text-t8--line-height: var(--spacing-s10);
+  --text-t9: calc(var(--text-t8) * var(--scale-ratio));
+  --text-t9--line-height: var(--spacing-s11);
+  --text-t10: calc(var(--text-t9) * var(--scale-ratio));
+  --text-t10--line-height: var(--spacing-s12);
+  --text-t11: calc(var(--text-t10) * var(--scale-ratio));
+  --text-t11--line-height: var(--spacing-s13);
+  --text-t12: calc(var(--text-t11) * var(--scale-ratio));
+  --text-t12--line-height: var(--spacing-s14);
+  --text-t13: calc(var(--text-t12) * var(--scale-ratio));
+  --text-t13--line-height: var(--spacing-s15);
+  --text-t14: calc(var(--text-t13) * var(--scale-ratio));
+  --text-t14--line-height: var(--spacing-s16);
+
+  /* Spacing ramp — 16 steps, base = optical height of the face, x1.25.
+     Four sub-base steps continue the same series downward for gaps tighter
+     than the optical height. s15 and s16 are off the end of anything you
+     would pad with; they exist so t13 and t14 have a line height on the
+     series. */
+  --spacing-s4xs: var(--space-s4xs);
+  --spacing-s3xs: var(--space-s3xs);
+  --spacing-s2xs: var(--space-s2xs);
+  --spacing-sxs: var(--space-sxs);
+  --spacing-s1: var(--space-base);
+  --spacing-s2: calc(var(--spacing-s1) * var(--scale-ratio));
+  --spacing-s3: calc(var(--spacing-s2) * var(--scale-ratio));
+  --spacing-s4: calc(var(--spacing-s3) * var(--scale-ratio));
+  --spacing-s5: calc(var(--spacing-s4) * var(--scale-ratio));
+  --spacing-s6: calc(var(--spacing-s5) * var(--scale-ratio));
+  --spacing-s7: calc(var(--spacing-s6) * var(--scale-ratio));
+  --spacing-s8: calc(var(--spacing-s7) * var(--scale-ratio));
+  --spacing-s9: calc(var(--spacing-s8) * var(--scale-ratio));
+  --spacing-s10: calc(var(--spacing-s9) * var(--scale-ratio));
+  --spacing-s11: calc(var(--spacing-s10) * var(--scale-ratio));
+  --spacing-s12: calc(var(--spacing-s11) * var(--scale-ratio));
+  --spacing-s13: calc(var(--spacing-s12) * var(--scale-ratio));
+  --spacing-s14: calc(var(--spacing-s13) * var(--scale-ratio));
+  --spacing-s15: calc(var(--spacing-s14) * var(--scale-ratio));
+  --spacing-s16: calc(var(--spacing-s15) * var(--scale-ratio));
+
+  /* Radius — the same series, so corners share the spacing rhythm. The
+     family sits three steps up from where the sub-base steps put it, which
+     on a 1.25 series is 1.953x: the nearest thing the scale has to double. */
+  /* One step below the family's floor, for marks smaller than the floor
+     itself. --radius-xs is 8.19px; a contribution heatmap cell is ~8px
+     square, so the floor would round it into a circle, and those cells have
+     to read as squares. Three ratio steps down only reaches 4.19px, so this
+     one leaves the series deliberately -- it is a data-mark radius, not a
+     layout radius, and nothing above 10px should use it. */
+  --radius-2xs: calc(var(--radius-xs) / 4);
+  --radius-xs: var(--spacing-sxs);
+  --radius-sm: var(--spacing-s1);
+  --radius-md: var(--spacing-s2);
+  --radius-lg: var(--spacing-s3);
+  --radius-xl: var(--spacing-s4);
+
+  /* Leading — for the rare override of a step's paired line height. Same
+     values as the spacing ramp, so an override stays on the series:
+     leading-s6 is exactly as tall as gap-s6 is wide. */
+  --leading-s1: var(--spacing-s1);
+  --leading-s2: var(--spacing-s2);
+  --leading-s3: var(--spacing-s3);
+  --leading-s4: var(--spacing-s4);
+  --leading-s5: var(--spacing-s5);
+  --leading-s6: var(--spacing-s6);
+  --leading-s7: var(--spacing-s7);
+  --leading-s8: var(--spacing-s8);
+  --leading-s9: var(--spacing-s9);
+  --leading-s10: var(--spacing-s10);
+  --leading-s11: var(--spacing-s11);
+  --leading-s12: var(--spacing-s12);
+  --leading-s13: var(--spacing-s13);
+  --leading-s14: var(--spacing-s14);
+  --leading-s15: var(--spacing-s15);
+  --leading-s16: var(--spacing-s16);
+
+  /* Palettes — three hues, 11 steps each, sharing one lightness ramp. Chroma
+     arcs from near-neutral at the ends to a peak in the middle, then is pulled
+     back per step to the most saturated value that still lands inside sRGB.
+     Azure and gold run out of gamut earlier than magenta, so their peaks sit
+     lower. Raw palette, not semantic: the same in light and dark. */
+
+  /* magenta — hue 328 */
+  --color-magenta-050: oklch(0.971 0.018 328);
+  --color-magenta-100: oklch(0.936 0.040 328);
+  --color-magenta-200: oklch(0.874 0.080 328);
+  --color-magenta-300: oklch(0.795 0.122 328);
+  --color-magenta-400: oklch(0.706 0.160 328);
+  --color-magenta-500: oklch(0.624 0.190 328);
+  --color-magenta-600: oklch(0.551 0.180 328);
+  --color-magenta-700: oklch(0.472 0.152 328);
+  --color-magenta-800: oklch(0.395 0.122 328);
+  --color-magenta-900: oklch(0.317 0.092 328);
+  --color-magenta-950: oklch(0.223 0.055 328);
+
+  /* azure — hue 237 */
+  --color-azure-050: oklch(0.971 0.015 237);
+  --color-azure-100: oklch(0.936 0.035 237);
+  --color-azure-200: oklch(0.874 0.071 237);
+  --color-azure-300: oklch(0.795 0.119 237);
+  --color-azure-400: oklch(0.706 0.154 237);
+  --color-azure-500: oklch(0.624 0.136 237);
+  --color-azure-600: oklch(0.551 0.120 237);
+  --color-azure-700: oklch(0.472 0.103 237);
+  --color-azure-800: oklch(0.395 0.086 237);
+  --color-azure-900: oklch(0.317 0.069 237);
+  --color-azure-950: oklch(0.223 0.048 237);
+
+  /* gold — hue 85 */
+  --color-gold-050: oklch(0.971 0.018 85);
+  --color-gold-100: oklch(0.936 0.040 85);
+  --color-gold-200: oklch(0.874 0.080 85);
+  --color-gold-300: oklch(0.795 0.122 85);
+  --color-gold-400: oklch(0.706 0.144 85);
+  --color-gold-500: oklch(0.624 0.127 85);
+  --color-gold-600: oklch(0.551 0.112 85);
+  --color-gold-700: oklch(0.472 0.096 85);
+  --color-gold-800: oklch(0.395 0.080 85);
+  --color-gold-900: oklch(0.317 0.064 85);
+  --color-gold-950: oklch(0.223 0.045 85);
+}
+
+@layer base {
+  body {
+    font-family: var(--font-sans);
+    font-size: var(--type-base);
+    font-weight: var(--font-wght);
+    font-variation-settings:
+      "slnt" var(--font-slnt),
+      "wdth" var(--font-wdth),
+      "GRAD" var(--font-GRAD),
+      "XOPQ" var(--font-XOPQ);
+  }
+}
+
+/* Content grid — 19 columns, 17 of them live content, one gutter each side. */
+@utility grid-canvas {
+  display: grid;
+  grid-template-columns: repeat(var(--grid-columns), minmax(0, 1fr));
+  column-gap: var(--grid-gutter);
+}
+
+@utility content-area {
+  grid-column: 2 / span var(--grid-content-columns);
+}
+
+@utility bleed-area {
+  grid-column: 1 / -1;
+}

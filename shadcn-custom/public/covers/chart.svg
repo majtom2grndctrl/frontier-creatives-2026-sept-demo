@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 180" width="320" height="180" role="img" aria-label="Abstract bar and line chart">
+  <rect width="320" height="180" fill="#f2eee0"/>
+  <g fill="#c9b276">
+    <rect x="40" y="104" width="26" height="44" rx="3"/>
+    <rect x="80" y="86" width="26" height="62" rx="3"/>
+    <rect x="120" y="112" width="26" height="36" rx="3"/>
+    <rect x="160" y="70" width="26" height="78" rx="3"/>
+    <rect x="200" y="54" width="26" height="94" rx="3"/>
+    <rect x="240" y="38" width="26" height="110" rx="3"/>
+  </g>
+  <path d="M40 96 L93 78 L133 92 L173 60 L213 46 L253 30" fill="none" stroke="#6b5a24" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+  <line x1="30" y1="148" x2="290" y2="148" stroke="#6b5a24" stroke-width="2" opacity="0.4"/>
+</svg>
