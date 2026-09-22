@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 180" role="img">
+  <title>Abstract bar and line chart illustration</title>
+  <rect width="320" height="180" fill="#5c5c5c"/>
+  <line x1="32" y1="150" x2="296" y2="150" stroke="#c4c4c4" stroke-width="1.5"/>
+  <line x1="32" y1="30" x2="32" y2="150" stroke="#c4c4c4" stroke-width="1.5"/>
+  <rect x="52" y="104" width="28" height="46" fill="#8a8a8a"/>
+  <rect x="96" y="80" width="28" height="70" fill="#9a9a9a"/>
+  <rect x="140" y="118" width="28" height="32" fill="#8a8a8a"/>
+  <rect x="184" y="64" width="28" height="86" fill="#9a9a9a"/>
+  <rect x="228" y="92" width="28" height="58" fill="#8a8a8a"/>
+  <path d="M52,96 L96,68 L140,100 L184,48 L256,74" fill="none" stroke="#e6e6e6" stroke-width="2"/>
+  <circle cx="52" cy="96" r="3" fill="#e6e6e6"/>
+  <circle cx="96" cy="68" r="3" fill="#e6e6e6"/>
+  <circle cx="140" cy="100" r="3" fill="#e6e6e6"/>
+  <circle cx="184" cy="48" r="3" fill="#e6e6e6"/>
+  <circle cx="256" cy="74" r="3" fill="#e6e6e6"/>
+</svg>

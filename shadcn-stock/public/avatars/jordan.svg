@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img">
+  <title>Generic placeholder person avatar</title>
+  <rect width="64" height="64" rx="32" fill="#6b6b6b"/>
+  <circle cx="32" cy="25" r="12" fill="#d8d8d8"/>
+  <path d="M10,58 C10,42 18,36 32,36 C46,36 54,42 54,58 Z" fill="#d8d8d8"/>
+</svg>
