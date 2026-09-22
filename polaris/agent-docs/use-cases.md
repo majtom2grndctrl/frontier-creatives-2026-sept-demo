@@ -347,7 +347,7 @@ Icon-only buttons **must** carry `accessibilityLabel` or Polaris warns in the co
 
 - **Breadcrumbs**: `<s-link slot="breadcrumb-actions">` inside `<s-page>`.
 - **App nav sidebar**: no component — `s-nav-menu` is App Bridge. Build it with `<s-stack>` + `<s-link>`, or the `aside` slot on `s-page`.
-- **Tabs**: ❌ no `s-tabs`. Substitutes: a `<s-button-group>` of `s-press-button`s (real pressed state, correct toggle-group ARIA) with your own show/hide, `<s-select>` as a view switcher, or separate `s-section`s.
+- **Tabs**: ❌ no `s-tabs`. Substitutes: an `<s-stack direction="inline">` of `s-press-button`s (real pressed state, correct toggle-group ARIA) with your own show/hide, `<s-select>` as a view switcher, or separate `s-section`s. Do **not** wrap the press buttons in `s-button-group` — its default slot drops them and they render nothing.
 - **Pagination**: only what `<s-table paginate>` provides. No standalone pagination component.
 
 ## "I need a metric / KPI tile"

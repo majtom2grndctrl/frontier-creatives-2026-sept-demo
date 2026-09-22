@@ -1,3 +1,120 @@
+/*
+  Geometry only, and only for this app's own elements — never a Polaris
+  component, whose shadow DOM a stylesheet cannot reach anyway. No colors, no
+  type, no arbitrary spacing: surfaces, tone, and padding all come from
+  component props and the Polaris token scale.
+*/
+
 body {
   margin: 0;
+}
+
+/*
+  The demo harness: a slim switcher strip above a stage that owns the page's one
+  scroll container. Each demo sizes itself to the stage.
+*/
+.demo-root {
+  display: flex;
+  flex-direction: column;
+  block-size: 100dvh;
+}
+
+.demo-switcher {
+  flex: none;
+}
+
+.demo-stage {
+  flex: 1;
+  min-block-size: 0;
+  overflow-y: auto;
+}
+
+/* The publication app shell: a fixed rail beside a pane that scrolls on its own
+   (publication spec §2). */
+.app-root {
+  container: app-shell / inline-size;
+  block-size: 100%;
+}
+
+.app-shell {
+  display: grid;
+  grid-template-columns: minmax(0, 15rem) minmax(0, 1fr);
+  block-size: 100%;
+}
+
+.app-shell__rail,
+.app-shell__pane {
+  min-block-size: 0;
+  overflow-y: auto;
+  /* Grid, so the Polaris box inside stretches to the full column height. */
+  display: grid;
+  grid-template-rows: minmax(min-content, 1fr);
+}
+
+/* The pane header stays put while the dashboard scrolls beneath it (spec §4). */
+.pane-header {
+  position: sticky;
+  inset-block-start: 0;
+  z-index: 1;
+}
+
+.pane-header__title {
+  margin: 0;
+}
+
+.pane-header__drawer-trigger {
+  display: none;
+}
+
+/* Card interior: header band, then a body that takes the remaining height. */
+.card {
+  display: flex;
+  flex-direction: column;
+  min-block-size: 0;
+}
+
+/* The drafts list scrolls inside the card; the card never grows to fit it. */
+.card__scroll {
+  flex: 1;
+  min-block-size: 0;
+  overflow-y: auto;
+}
+
+/*
+  The selected metric segment's top indicator. `currentColor` is the inherited
+  Polaris text color, which is also what the primary button fills with, so the
+  bar reads as the same accent without naming a color.
+*/
+.metric-segment__indicator {
+  block-size: 0.1875rem;
+  background: transparent;
+}
+
+.metric-segment__indicator[data-selected="true"] {
+  background: currentColor;
+}
+
+/*
+  Responsive shell (spec §16), driven by a container query rather than a media
+  query: medium narrows the rail to icons, narrow drops it for the drawer in the
+  pane header. These come last so they win over the base rules above.
+*/
+@container app-shell (inline-size < 1200px) {
+  .app-shell {
+    grid-template-columns: 4.5rem minmax(0, 1fr);
+  }
+}
+
+@container app-shell (inline-size < 768px) {
+  .app-shell {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .app-shell__rail {
+    display: none;
+  }
+
+  .pane-header__drawer-trigger {
+    display: block;
+  }
 }

@@ -14,6 +14,45 @@ pnpm dev          # http://localhost:5173
 
 Agent instructions are in `AGENTS.md`; component reference is in `agent-docs/`.
 
+## What it renders
+
+An index of the prototypes at `/`, and two demos switched from a slim strip at
+the top of the window. The strip is the only thing the demos share: each is a
+whole *site* with its own chrome, its own navigation, and its own spec in the
+repo root. Only one screen mounts at a time, which is what keeps the "one
+`s-page` per app" rule true — the index owns one, the publication dashboard owns
+one, the developer profile uses none.
+
+**Publication dashboard** — the Home screen for *Meridian Notes*, a fictional
+newsletter: a recessed nav rail, a full-width pane header, and a scrolling
+dashboard of an Overview panel (a metric selector driving a step-area chart),
+Latest post, Drafts, and Recent posts. Spec: `publication-dashboard spec.md`.
+
+**Developer profile** — the public Overview tab for a person on a code-hosting
+platform: a full-bleed chrome band with a profile tab bar, a content-height
+sidebar (avatar, identity, meta rows, achievements, organizations) beside a much
+taller main column of README card, pinned repositories, a year-long contribution
+heatmap, an activity breakdown chart, and a contribution timeline, with a year
+rail running alongside. Spec: `developer-profile-overview spec.md`.
+
+Everything comes from fixtures in `src/data/` — no network, no persistence.
+
+### Adaptations the design system forced
+
+Both specs are written against semantic roles rather than values, to be resolved
+against whatever design system the implementer has. Three roles have no Polaris
+equivalent, and the substitutions are deliberate:
+
+| Spec asks for | Built as | Why |
+|---|---|---|
+| A four-step sequential colour ramp (`data/contribution-N`) for the heatmap, radar and volume bars | `currentColor` at four ascending opacities | Polaris ships no data-visualisation palette and this app names no literal colours. The ramp's *relationships* survive; its hue does not. |
+| A type scale where the README H1 is the largest text on the page | `s-heading` (same size as body, weight 600) | There is no type-scale prop. Size comes only from `s-heading` vs `s-paragraph` vs `s-text`, so the spec's ordering is carried by weight alone. |
+| Accent-coloured **bold** links in the activity-overview sentence | Accent, regular weight | `s-text` sets its own colour and overrides the link accent, so accent and bold are mutually exclusive. |
+
+Two literal colours do survive, both of which the spec designates as *data*
+rather than tokens: a pinned repository's language dot and an achievement's
+count pill. The fixture needs them to prove states the spec enumerates.
+
 ## Why there is no Shopify CLI scaffold here
 
 Two upstream facts shaped this app.

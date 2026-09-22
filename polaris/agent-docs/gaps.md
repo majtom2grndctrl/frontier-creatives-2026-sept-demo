@@ -12,7 +12,7 @@ Absent = not registered by `polaris-1.js`. Writing one produces an inert unknown
 | `ResourceList` / `ResourceItem` | ❌ no `s-resource-list` | `<s-table variant="list">` (the built-in stacked layout, with `listSlot` on headers driving what shows where), **or** an `<s-stack>` of `<s-clickable>` rows. |
 | `Form`, `FormLayout` | ❌ no `s-form` | Native `<form>`. All fields are form-associated — `FormData`, `reset()`, and `<s-button type="submit">` work. `FormLayout.Group` → `<s-stack direction="inline" gap="base">`. |
 | `Toast`, `Frame`, `ContextualSaveBar` | ❌ App Bridge only | No standalone equivalent. Use `<s-banner dismissible>` and show/hide it. |
-| `Tabs` | ❌ no `s-tabs` | `<s-button-group>` of `<s-press-button>` (real pressed state + ARIA) with your own panel switching, or `<s-select>` as a view switcher. |
+| `Tabs` | ❌ no `s-tabs` | `<s-stack direction="inline">` of `<s-press-button>` (real pressed state + ARIA) with your own panel switching, or `<s-select>` as a view switcher. **Not `s-button-group`** — it drops `s-press-button` children silently. |
 | `Pagination` | ❌ no `s-pagination` | Only `<s-table paginate hasNextPage hasPreviousPage>` + the `nextpage`/`previouspage` events. For non-table pagination, roll your own with two `s-button`s. |
 | `EmptyState` | ❌ | `<s-section>` + centered `<s-stack>` with `s-icon` + `s-heading` + `s-paragraph` + `s-button`. |
 | `SkeletonBodyText`, `SkeletonDisplayText`, `SkeletonPage`, `SkeletonThumbnail` | ❌ | `<s-spinner>`, or `<s-box background="subdued" borderRadius="base" blockSize=…>` placeholder bars. |
@@ -49,6 +49,40 @@ Absent = not registered by `polaris-1.js`. Writing one produces an inert unknown
 
 ### Styling is not overridable
 Shadow DOM, no exposed CSS parts, appearance driven by merchant branding settings. Your stylesheet cannot reach inside. Everything visual comes from component props (`padding`, `gap`, `background`, `border`, `tone`, `color`, `variant`, `size`). If you want a stylesheet, you're using the wrong element — reach for `s-box` / `s-clickable`, which expose the layout surface as props.
+
+### Responsive value strings split on the first comma
+`@container (condition) valueIfTrue, valueIfFalse` is parsed by splitting on a comma, so a CSS function containing one is unusable inside a responsive value. `gridTemplateColumns="@container (inline-size > 700px) repeat(2, minmax(0, 1fr)), 1fr"` logs `Invalid responsive value` and applies **nothing** — not even the fallback. Expand the track list: `1fr 1fr, 1fr`. To let a `1fr` track shrink below its content without `minmax(0, 1fr)`, put `minInlineSize="0"` on the `s-grid-item`.
+
+### `s-page`'s header is a page header, not a top bar
+Two limits bite when a design wants an app-chrome bar:
+- The header content is constrained to the same centered column as the body (`min(100%, 630px)` at `inlineSize="base"`), so a title cannot sit at the pane's far left.
+- `secondary-actions` renders inline only up to a small count; past it Polaris **clones** every action into a `More actions` overflow menu and renders no inline buttons. The clones drop `interestFor`, so tooltips stop working. `variant="tertiary"` is rejected from the slot outright — the slot takes secondary/auto only.
+
+Polaris ships no top bar (Shopify's is Admin chrome, hence `--s-topbar-offset`). Build one from `s-box` + `s-button` the same way you build nav. For a real `<h1>` outside `s-page heading`, wrap `<s-heading accessibilityRole="presentation">` in a native `<h1>`.
+
+### A button's overlay affordance is resolved once, at connect time
+Polaris decides a button's trailing caret and icon when the element connects:
+- `commandFor` pointing at an `s-menu` adds a trailing `chevron-down` — that is how you get a caret, not by slotting an icon.
+- An **icon-only** button pointing at an `s-menu` has its `icon` replaced with `menu-horizontal`, which reads as "more actions". Point it at an `s-popover` instead to keep the icon.
+- Changing `commandFor` on a live element does not re-resolve any of this. If the target changes, give React a different `key` so the element is recreated.
+
+### `s-button-group` silently drops `s-press-button` children
+Its default slot never assigns them, so they don't join the flat tree: `getComputedStyle(el).display` is `''`, the shadow `<button>` measures 0×0, and nothing paints. No error, no warning. Put `s-press-button`s in an `<s-stack direction="inline">` instead — they render and keep their pressed state and ARIA.
+
+### `s-link` inside `s-paragraph` is prose-styled, not accent
+A link in body copy renders `text/default` with an underline; the same link outside a paragraph renders the accent blue. `tone` does not change this — `tone="neutral"` is accent too. For an accent link, keep it out of `s-paragraph`; for quiet link text, put an `<s-text color="subdued">` inside it.
+
+### `s-text` inside `s-link` overrides the link's colour
+`s-text` sets its own colour, so `<s-link><s-text type="strong">` renders bold *default-coloured* text, not a bold accent link. Accent and bold are not composable: pick one. (This is the lever that makes the quiet-link recipe above work.)
+
+### `s-button` renders its slot as plain text
+The button reads its content as a text run: an `s-stack` inside one renders nothing, and `accessibilityVisibility="exclusive"` on an `s-text` inside one is ignored and shows. Give a button a string, an `icon`, and an `accessibilityLabel` — nothing else.
+
+### `s-table variant="list"` emits a heading per row
+The stacked layout renders each row's primary cell as a heading, so a five-row table adds five entries to the document outline. For a visually-hidden data table (a chart's text alternative, say) use a native `<table>` instead.
+
+### There is no dark theme standalone
+The bundle contains no `prefers-color-scheme` rule and no `color-scheme`. Every color is `var(--t-…, <light fallback>)`, and the `--t-*` tokens come from merchant branding injected by the Admin — nothing defines them on localhost, so the fallbacks always win. A theme toggle has nothing to switch.
 
 ### The docs and the manifest disagree
 `s-table` `variant`: shopify.dev prose lists `auto | list | table`; the Custom Elements Manifest lists `"auto" | "list"`. **The manifest is correct** — `variant="table"` falls back to `auto`. When prose and manifest conflict on an attribute, trust the manifest dump in `cem-reference.txt`. Icon names are the one exception: take those from `icons.txt`, which is generated from the vendored bundle.

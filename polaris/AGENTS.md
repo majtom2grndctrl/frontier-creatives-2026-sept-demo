@@ -57,6 +57,8 @@ that true:
 
 ## Structure
 
+- `src/prototypes.ts` is the prototype list. Add a screen there and it appears on the index at `/` and in the harness switcher; `App.tsx` and `PrototypeIndex.tsx` read nothing else.
+- Each demo is a whole site with its own chrome, mounted as its own route under the harness. Only one mounts at a time.
 - One `<s-page>` per app. Its `heading` is the `<h1>`; actions go in the `primary-action` / `secondary-actions` / `breadcrumb-actions` slots.
 - `<s-section>` is the card. Nest it for subsections — the nesting depth drives both the visual weight *and* the heading level.
 - `<s-heading>` levels itself from `s-section` nesting depth. There is no `level` prop; don't try to set one.
