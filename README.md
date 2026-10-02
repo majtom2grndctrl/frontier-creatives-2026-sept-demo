@@ -11,7 +11,7 @@ A live demonstration showcasing how **establishing a design system up front allo
 
 When AI coding agents are asked to build interfaces from prompts or direct screenshots, the default result is almost always the same: generic "AI aesthetic", bloated Tailwind utility soup, hardcoded hex colors, arbitrary spacing, fragile layout assumptions, and brand drift.
 
-This repository demonstrates an alternative workflow:
+This repository demonstrates an alternative, more production-oriented workflow:
 
 ```
 ┌─────────────────────────┐
